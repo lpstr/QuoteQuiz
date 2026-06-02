@@ -18,6 +18,9 @@ namespace QuoteQuiz.Infrastructure
         public DbSet<GameSession> GameSessions => Set<GameSession>();
         public DbSet<GameQuestion> GameQuestions => Set<GameQuestion>();
 
+        public DbSet<Role> Roles => Set<Role>();
+        public DbSet<UserRole> UserRoles => Set<UserRole>();
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>(b =>
@@ -75,6 +78,25 @@ namespace QuoteQuiz.Infrastructure
                     .WithMany()
                     .HasForeignKey(gq => gq.SelectedAuthorId)
                     .OnDelete(DeleteBehavior.NoAction);
+            });
+
+            modelBuilder.Entity<Role>(b =>
+            {
+                b.HasKey(r => r.Id);
+                b.Property(r => r.Name).IsRequired().HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<UserRole>(b =>
+            {
+                b.HasKey(ur => new { ur.UserId, ur.RoleId });
+
+                b.HasOne(ur => ur.User)
+                    .WithMany(u => u.UserRoles)
+                    .HasForeignKey(ur => ur.UserId);
+
+                b.HasOne(ur => ur.Role)
+                    .WithMany(r => r.UserRoles)
+                    .HasForeignKey(ur => ur.RoleId);
             });
         }
     }

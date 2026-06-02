@@ -1,4 +1,5 @@
 ﻿using QuoteQuiz.Application.DTOs;
+using QuoteQuiz.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace QuoteQuiz.Application.Contracts.Services
         Task<UserDto> CreateAsync(CreateUserDto dto, CancellationToken ct = default);
         Task<UserDto?> UpdateAsync(int id, UpdateUserDto dto, CancellationToken ct = default);
         Task<bool> DeleteAsync(int id, CancellationToken ct = default);
+        Task<User> GetByEmail(string email, CancellationToken ct = default);
     }
 }

@@ -30,7 +30,6 @@ export class ListUserSessionsComponent implements OnInit {
   }
 
   open(sessionId: number): void {
-    console.log(sessionId);
     this.router.navigate(['/reviews/session', sessionId]);
   }
 }

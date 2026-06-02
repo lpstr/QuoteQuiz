@@ -41,5 +41,13 @@ namespace QuoteQuiz.Infrastructure.Repositories
             _context.Users.Remove(user);
             await _context.SaveChangesAsync(ct);
         }
+
+        public async Task<User> GetByEmail(string email, CancellationToken ct = default)
+        {
+            return await _context.Users
+             .Include(u => u.UserRoles)
+                 .ThenInclude(ur => ur.Role)
+             .FirstOrDefaultAsync(u => u.Email == email, ct);
+        }
     }
 }

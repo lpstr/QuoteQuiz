@@ -65,5 +65,10 @@ namespace QuoteQuiz.Application.Services
             await _users.DeleteAsync(user, ct);
             return true;
         }
+
+        public async Task<User> GetByEmail(string email, CancellationToken ct = default)
+        {
+            return await _users.GetByEmail(email, ct);
+        }
     }
 }

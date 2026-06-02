@@ -14,5 +14,6 @@ namespace QuoteQuiz.Application.Contracts.Repositories
         Task AddAsync(User user, CancellationToken ct = default);
         Task UpdateAsync(User user, CancellationToken ct = default);
         Task DeleteAsync(User user, CancellationToken ct = default);
+        Task<User> GetByEmail(string email, CancellationToken ct = default);
     }
 }

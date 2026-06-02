@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuoteQuiz.Application.Contracts.Services;
 using QuoteQuiz.Application.DTOs;
@@ -6,6 +7,7 @@ using QuoteQuiz.Domain.Enums;
 
 namespace QuoteQuiz.API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class GamesController : ControllerBase

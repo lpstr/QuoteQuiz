@@ -26,35 +26,34 @@ export class SettingsPageComponent implements OnInit {
   GameMode = GameMode;
 
   mode: GameMode;
-  userId: number;
+  //userId: number;
 
-  users: UserDto[] = [];
+  //users: UserDto[] = [];
 
   constructor(
-    private settings: SettingsService,
-    private userService: UserService
+    private settings: SettingsService
   ) {
     this.mode = this.settings.getMode();
-    this.userId = this.userService.getUserId();
+    //this.userId = this.userService.getUserId();
   }
 
   ngOnInit(): void {
-    this.userService.getUsers().subscribe(users => {
-      this.users = users.filter(u => !u.isDisabled); // hide disabled users
-      console.log(this.users);
-    });
+    //this.userService.getUsers().subscribe(users => {
+    //  this.users = users.filter(u => !u.isDisabled); // hide disabled users
+    //  console.log(this.users);
+    //});
   }
-  get selectedUserName(): string {
-    return this.users.find(u => u.id === this.userId)?.username ?? '';
-  }
+  //get selectedUserName(): string {
+  //  return this.users.find(u => u.id === this.userId)?.username ?? '';
+  //}
   save(): void {
     this.settings.setMode(this.mode);
-    this.userService.setUserId(this.userId);
+   // this.userService.setUserId(this.userId);
 
-    const selectedUser = this.users.find(u => u.id === this.userId);
-    if (selectedUser) {
-      this.userService.setUserName(selectedUser.username);
-    }
+    //const selectedUser = this.users.find(u => u.id === this.userId);
+    //if (selectedUser) {
+    //  this.userService.setUserName(selectedUser.username);
+    //}
 
     alert('Settings saved');
   }

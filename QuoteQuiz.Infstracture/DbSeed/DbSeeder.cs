@@ -14,6 +14,8 @@ public static class DbSeeder
         await SeedAuthors(db);
         await SeedQuotes(db);
         await SeedSessions(db);
+        await SeedRoles(db);
+        await SeedUserRoles(db);
     }
 
     private static async Task SeedAuthors(QuizDbContext db)
@@ -54,13 +56,15 @@ public static class DbSeeder
 
         var users = new List<User>
         {
-            new() { Username = "A User", Email = "auser@email.com", IsDisabled = false },
-            new() { Username = "BB User", Email = "hhhhh@email.com", IsDisabled = false },
-            new() { Username = "CCC User", Email = "teascccc@email.com", IsDisabled = false },
-            new() { Username = "DED User", Email = "fsaaswe@email.com", IsDisabled = false },
-            new() { Username = "FER User", Email = "dsafhhh@email.com", IsDisabled = false },
-            new() { Username = "QWER User", Email = "erasuser@email.com", IsDisabled = false },
-            new() { Username = "TYU User", Email = "tyuser@email.com", IsDisabled = false }
+            new() { Username = "AUser", Email = "auser@email.com", IsDisabled = false },
+            new() { Username = "BBUser", Email = "hhhhh@email.com", IsDisabled = false },
+            new() { Username = "CCCUser", Email = "teascccc@email.com", IsDisabled = false },
+            new() { Username = "DEDUser", Email = "fsaaswe@email.com", IsDisabled = false },
+            new() { Username = "FERUser", Email = "dsafhhh@email.com", IsDisabled = false },
+            new() { Username = "QWERUser", Email = "erasuser@email.com", IsDisabled = false },
+            new() { Username = "TYUUser", Email = "tyuser@email.com", IsDisabled = false },
+            new() { Username = "admin", Email ="admin@admin.com", IsDisabled = false },
+            new() { Username = "adminSub", Email= "subadmin@subadmin.com", IsDisabled = false }
         };
         db.Users.AddRange(users);
         await db.SaveChangesAsync();
@@ -101,7 +105,7 @@ public static class DbSeeder
                     {
                         // Binary mode
                         bool answerYes = random.Next(0, 2) == 0;
-                        bool isCorrect = answerYes; 
+                        bool isCorrect = answerYes;
 
                         session.Questions.Add(new GameQuestion
                         {
@@ -198,6 +202,52 @@ public static class DbSeeder
         };
 
         db.Quotes.AddRange(quotes);
+        await db.SaveChangesAsync();
+    }
+
+    private static async Task SeedRoles(QuizDbContext db)
+    {
+        if (await db.Roles.AnyAsync()) return;
+
+        db.Roles.AddRange(
+            new Role { Name = "Admin" },
+            new Role { Name = "User" }
+        );
+
+        await db.SaveChangesAsync();
+    }
+
+    private static async Task SeedUserRoles(QuizDbContext db)
+    {
+        if (await db.UserRoles.AnyAsync()) return;
+
+        //var admin = await db.Users.FirstAsync(u => u.Username == "admin");
+        //var subAdmin = await db.Users.FirstAsync(u => u.Username == "adminSub");
+        //var userRole = await db.Roles.FirstAsync(r => r.Name == "User");
+        //var adminRole = await db.Roles.FirstAsync(r => r.Name == "Admin");
+
+
+        var userList = await db.Users.ToListAsync();
+
+        List<UserRole> userRoles = new List<UserRole>();
+
+        User A(string username) => userList.First(a => a.Username == username);
+
+        var userRole = await db.Roles.FirstAsync(r => r.Name == "User");
+        var adminRole = await db.Roles.FirstAsync(r => r.Name == "Admin");
+
+        foreach (var user in userList)
+        {
+            UserRole role = new UserRole();
+
+            role.UserId = user.Id;
+            role.RoleId = (user.Username == "admin" || user.Username == "adminSub") ? adminRole.Id : userRole.Id;
+
+            userRoles.Add(role);
+        }
+
+        db.UserRoles.AddRange(userRoles);
+
         await db.SaveChangesAsync();
     }
 }

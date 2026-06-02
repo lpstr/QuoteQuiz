@@ -22,13 +22,13 @@ export class GameDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     const sessionId = Number(this.route.snapshot.paramMap.get('sessionId'));
+    
     const userId = Number(localStorage.getItem('quiz-user-id') ?? 1);
 
     this.reviewService.getUserSessions(userId).subscribe(sessions => {
       const found = sessions.find(s => s.sessionId === sessionId);
       if (found) {
         this.game = found;
-        console.log(this.game);
       }
     });
   }

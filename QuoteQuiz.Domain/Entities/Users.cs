@@ -17,6 +17,7 @@ namespace QuoteQuiz.Domain.Entities
         //public DateTime DisabledAt { get; set; } = DateTime.UtcNow;
         //public int DisabledByUserId { get; set; }
         public ICollection<GameSession> GameSessions { get; set; } = new List<GameSession>();
+        public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
     }
 
 }

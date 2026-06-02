@@ -4,6 +4,9 @@ using QuoteQuiz.Application.Contracts.Services;
 using QuoteQuiz.Application.Services;
 using QuoteQuiz.Infrastructure;
 using QuoteQuiz.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,6 +39,24 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod());
 });
 
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        };
+    });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+});
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -50,7 +71,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
 app.UseCors("AllowAngular");
+
+    app.UseAuthentication();
+    app.UseAuthorization();
 app.UseHttpsRedirection();
 app.MapControllers();
 app.Run();
