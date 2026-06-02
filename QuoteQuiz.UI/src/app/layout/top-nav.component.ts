@@ -17,4 +17,7 @@ export class TopNavComponent {
   get userId(): number {
     return this.userService.getUserId();
   }
+  get userName(): string {
+    return this.userService.getUserName();
+  }
 }

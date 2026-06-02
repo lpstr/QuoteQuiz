@@ -38,6 +38,14 @@ export class UserService {
     localStorage.setItem(this.key, String(id));
   }
 
+  setUserName(name: string): void {
+    localStorage.setItem('quiz-user-name', name);
+  }
+
+  getUserName(): string {
+    return localStorage.getItem('quiz-user-name') ?? '';
+  }
+
   getUsers(): Observable<UserDto[]> {
     return this.http.get<UserDto[]>(`${this.apiBaseUrl}/users`);
   }

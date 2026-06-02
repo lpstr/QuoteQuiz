@@ -6,12 +6,12 @@ import { environment } from '../../environments';
 export interface GameQuestionReviewDto {
   id: number;
   quoteText: string;
-  correctAuthor: string;
+  authorName: string;
   mode: number;
   isCorrect: boolean;
   answerYesNo: boolean | null;
-  selectedAuthor: string | null;
-  suggestedAuthor: string | null;
+  selectedAuthorName: string | null;
+  suggestedAuthorName: string | null;
   answeredAt: string;
 }
 

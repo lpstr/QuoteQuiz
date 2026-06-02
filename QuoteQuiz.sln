@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36603.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuoteQuiz.API", "QuoteQuiz\QuoteQuiz.API.csproj", "{D704E856-A0D1-41EC-90B9-2651AE3D7958}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuoteQuiz.Api", "QuoteQuiz\QuoteQuiz.Api.csproj", "{D704E856-A0D1-41EC-90B9-2651AE3D7958}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuoteQuiz.Infrastructure", "QuoteQuiz.Infstracture\QuoteQuiz.Infrastructure.csproj", "{36F64EE6-1D16-45D5-8AC4-D939F960EA4A}"
 EndProject

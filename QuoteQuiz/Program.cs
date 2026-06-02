@@ -4,6 +4,7 @@ using QuoteQuiz.Application.Contracts.Services;
 using QuoteQuiz.Application.Services;
 using QuoteQuiz.Infrastructure;
 using QuoteQuiz.Infrastructure.Repositories;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +37,12 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<QuizDbContext>();
+    await DbSeeder.SeedAsync(db);
+}
 
 if (app.Environment.IsDevelopment())
 {

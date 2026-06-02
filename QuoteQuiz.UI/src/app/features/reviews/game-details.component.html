@@ -33,14 +33,14 @@
     <p class="answer">
       <strong>Your Answer:</strong>
       {{
-        q.mode === 0
-          ? (q.answerYesNo ? 'Yes' : 'No')
-          : q.selectedAuthor
+        q.mode === 1
+          ? (q.answerYesNo ? 'Yes - ' + q.suggestedAuthorName : 'No - ' + q.suggestedAuthorName)
+          : q.selectedAuthorName
       }}
     </p>
 
     <p class="correct-author">
-      <strong>Correct Author:</strong> {{ q.correctAuthor }}
+      <strong>Correct Author:</strong> {{ q.authorName }}
     </p>
 
     <mat-icon *ngIf="q.isCorrect" class="icon-correct">check_circle</mat-icon>

@@ -1,42 +1,69 @@
-<div class="quiz-container" *ngIf="currentQuestion as q; else noMore">
-  <h2>Who Said It?</h2>
+<div class="quiz-container">
 
-  <blockquote>
-    "{{ q.quoteText }}"
-  </blockquote>
+  <div *ngIf="!sessionId">
+    <h2>Who Said It?</h2>
 
-  <div *ngIf="!isAnswered">
-    <ng-container [ngSwitch]="mode">
-      <div *ngSwitchCase="GameMode.Binary">
-        <p>{{ q.suggestedAuthorName }}?</p>
-        <button (click)="onBinaryAnswer(true)">Yes</button>
-        <button (click)="onBinaryAnswer(false)">No</button>
-      </div>
+    <button class="start-btn"
+            [disabled]="!selectedUserName"
+            (click)="startGame()">
+      Start Quiz
+    </button>
 
-      <div *ngSwitchCase="GameMode.MultipleAnswer">
-        <div *ngFor="let option of q.options">
-          <button (click)="onMultipleChoiceAnswer(option.id)">
-            {{ option.name }}
-          </button>
+    <p class="user-info" *ngIf="selectedUserName">
+      Playing as: <strong>{{ selectedUserName }}</strong>
+    </p>
+
+    <p class="no-user" *ngIf="!selectedUserName">
+      ⚠ No user selected.
+      <a routerLink="/settings">Go to Settings</a> to choose a user.
+    </p>
+
+    <hr />
+  </div>
+
+  <div *ngIf="sessionId && currentQuestion as q">
+    <h2>Who Said It?</h2>
+
+    <blockquote>
+      "{{ q.quoteText }}"
+    </blockquote>
+
+    <div *ngIf="!isAnswered">
+      <ng-container [ngSwitch]="mode">
+
+        <div *ngSwitchCase="GameMode.Binary">
+          <p>{{ q.suggestedAuthorName }}?</p>
+          <button class="answer-btn" (click)="onBinaryAnswer(true)">Yes</button>
+          <button class="answer-btn" (click)="onBinaryAnswer(false)">No</button>
         </div>
-      </div>
-    </ng-container>
+
+        <div *ngSwitchCase="GameMode.MultipleAnswer">
+          <div *ngFor="let option of q.options">
+            <button class="answer-btn" (click)="onMultipleChoiceAnswer(option.id)">
+              {{ option.name }}
+            </button>
+          </div>
+        </div>
+
+      </ng-container>
+    </div>
+
+    <div *ngIf="isAnswered && answerResult as r">
+      <p [class.correct]="r.isCorrect" [class.wrong]="!r.isCorrect">
+        {{ r.isCorrect ? 'Correct!' : 'Sorry, you are wrong!' }}
+        The right answer is: {{ r.correctAuthor }}.
+      </p>
+
+      <p class="author-reveal">
+        — {{ r.correctAuthor }}
+      </p>
+
+      <button class="next-btn" (click)="next()">Next</button>
+    </div>
   </div>
 
-  <div *ngIf="isAnswered && answerResult as r">
-    <p [class.correct]="r.isCorrect" [class.wrong]="!r.isCorrect">
-      {{ r.isCorrect ? 'Correct!' : 'Sorry, you are wrong!' }}
-      The right answer is: {{ r.correctAuthor }}.
-    </p>
-
-    <p class="author-reveal">
-      — {{ r.correctAuthor }}
-    </p>
-
-    <button (click)="next()">Next</button>
-  </div>
 </div>
 
 <ng-template #noMore>
-  <p>No more quotes.</p>
+  <p class="no-more">No more quotes.</p>
 </ng-template>

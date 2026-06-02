@@ -44,10 +44,18 @@ export class SettingsPageComponent implements OnInit {
       console.log(this.users);
     });
   }
-
+  get selectedUserName(): string {
+    return this.users.find(u => u.id === this.userId)?.username ?? '';
+  }
   save(): void {
     this.settings.setMode(this.mode);
     this.userService.setUserId(this.userId);
+
+    const selectedUser = this.users.find(u => u.id === this.userId);
+    if (selectedUser) {
+      this.userService.setUserName(selectedUser.username);
+    }
+
     alert('Settings saved');
   }
 }

@@ -22,6 +22,7 @@ export class QuizMainComponent {
 
   mode: GameMode;
   userId: number;
+  username: string;
 
   sessionId: number | null = null;
   currentQuestion: NextQuestionResponse | null = null;
@@ -35,11 +36,18 @@ export class QuizMainComponent {
     private settings: SettingsService
   ) {
     this.userId = this.userService.getUserId();
+    this.username = 'Testing';
+    //this.username = this.userService.getUser(this.userId); // NEW
+    console.log(this.userService.getUser(this.userId));
     this.mode = this.settings.getMode();
   }
 
   ngOnInit(): void {
-    this.startGame();
+
+  }
+
+  get selectedUserName(): string {
+    return this.userService.getUserName();
   }
 
   startGame(): void {
@@ -101,3 +109,4 @@ export class QuizMainComponent {
     this.loadNext();
   }
 }
+
