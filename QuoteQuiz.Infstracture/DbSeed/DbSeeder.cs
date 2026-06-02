@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QuoteQuiz.Domain.Entities;
+using QuoteQuiz.Domain.Enums;
 using QuoteQuiz.Infrastructure;
 using System;
 
@@ -9,8 +10,10 @@ public static class DbSeeder
 {
     public static async Task SeedAsync(QuizDbContext db)
     {
+        await SeedUsers(db);
         await SeedAuthors(db);
         await SeedQuotes(db);
+        await SeedSessions(db);
     }
 
     private static async Task SeedAuthors(QuizDbContext db)
@@ -42,6 +45,104 @@ public static class DbSeeder
         };
 
         db.Authors.AddRange(authors);
+        await db.SaveChangesAsync();
+    }
+
+    private static async Task SeedUsers(QuizDbContext db)
+    {
+        if (await db.Users.AnyAsync()) return;
+
+        var users = new List<User>
+        {
+            new() { Username = "A User", Email = "auser@email.com", IsDisabled = false },
+            new() { Username = "BB User", Email = "hhhhh@email.com", IsDisabled = false },
+            new() { Username = "CCC User", Email = "teascccc@email.com", IsDisabled = false },
+            new() { Username = "DED User", Email = "fsaaswe@email.com", IsDisabled = false },
+            new() { Username = "FER User", Email = "dsafhhh@email.com", IsDisabled = false },
+            new() { Username = "QWER User", Email = "erasuser@email.com", IsDisabled = false },
+            new() { Username = "TYU User", Email = "tyuser@email.com", IsDisabled = false }
+        };
+        db.Users.AddRange(users);
+        await db.SaveChangesAsync();
+    }
+
+    private static async Task SeedSessions(QuizDbContext db)
+    {
+        if (await db.GameSessions.AnyAsync()) return;
+
+        var users = await db.Users.Take(5).ToListAsync();
+        var quotes = await db.Quotes.Include(q => q.Author).ToListAsync();
+        var random = new Random();
+
+        var sessions = new List<GameSession>();
+
+        foreach (var user in users)
+        {
+            int sessionCount = random.Next(4, 6);
+
+            for (int i = 0; i < sessionCount; i++)
+            {
+                var session = new GameSession
+                {
+                    UserId = user.Id,
+                    StartedAt = DateTime.UtcNow.AddDays(-random.Next(1, 20)),
+                    FinishedAt = DateTime.UtcNow.AddDays(-random.Next(1, 20)).AddMinutes(5),
+                    Questions = new List<GameQuestion>()
+                };
+
+                int questionCount = random.Next(5, 9);
+                var selectedQuotes = quotes.OrderBy(_ => random.Next()).Take(questionCount).ToList();
+
+                foreach (var quote in selectedQuotes)
+                {
+                    bool isBinary = random.Next(0, 2) == 0;
+
+                    if (isBinary)
+                    {
+                        // Binary mode
+                        bool answerYes = random.Next(0, 2) == 0;
+                        bool isCorrect = answerYes; 
+
+                        session.Questions.Add(new GameQuestion
+                        {
+                            QuoteId = quote.Id,
+                            Mode = GameMode.Binary,
+                            SuggestedAuthorId = quote.AuthorId,
+                            SelectedAuthorId = null,
+                            AnswerYesNo = answerYes,
+                            IsCorrect = isCorrect,
+                            AnsweredAt = session.StartedAt.AddSeconds(random.Next(10, 120))
+                        });
+                    }
+                    else
+                    {
+                        // Multiple choice mode
+                        var wrongAuthor = quotes
+                            .Where(q => q.AuthorId != quote.AuthorId)
+                            .OrderBy(_ => random.Next())
+                            .First()
+                            .Author;
+
+                        bool pickCorrect = random.Next(0, 2) == 0;
+
+                        session.Questions.Add(new GameQuestion
+                        {
+                            QuoteId = quote.Id,
+                            Mode = GameMode.MultipleAnswer,
+                            SuggestedAuthorId = null,
+                            SelectedAuthorId = pickCorrect ? quote.AuthorId : wrongAuthor.Id,
+                            AnswerYesNo = null,
+                            IsCorrect = pickCorrect,
+                            AnsweredAt = session.StartedAt.AddSeconds(random.Next(10, 120))
+                        });
+                    }
+                }
+
+                sessions.Add(session);
+            }
+        }
+
+        db.GameSessions.AddRange(sessions);
         await db.SaveChangesAsync();
     }
 

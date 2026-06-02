@@ -26,7 +26,7 @@ export class SessionDetailsComponent implements OnInit {
     const userId = Number(localStorage.getItem('quiz-user-id') ?? 1);
 
     this.reviewService.getUserSessions(userId).subscribe(sessions => {
-      const found = sessions.find(s => s.id === sessionId);
+      const found = sessions.find(s => s.sessionId === sessionId);
       if (found) {
         this.session = found;
       }
