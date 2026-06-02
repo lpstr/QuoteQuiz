@@ -88,3 +88,11 @@
   top: 10px;
   right: 10px;
 }
+
+.summary-card h3{
+    color:white;
+}
+.summary-card .stat
+{
+    color:white;
+}

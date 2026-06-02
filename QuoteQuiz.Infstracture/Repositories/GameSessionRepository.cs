@@ -46,8 +46,13 @@ namespace QuoteQuiz.Infrastructure.Repositories
                 .Include(gs => gs.Questions)
                     .ThenInclude(q => q.Quote)
                         .ThenInclude(q => q.Author)
+                .Include(gs => gs.Questions)
+                    .ThenInclude(q => q.SuggestedAuthor)
+                .Include(gs => gs.Questions)
+                    .ThenInclude(q => q.SelectedAuthor)
                 .Where(gs => gs.UserId == userId)
                 .OrderByDescending(gs => gs.StartedAt)
                 .ToListAsync(ct);
+
     }
 }
