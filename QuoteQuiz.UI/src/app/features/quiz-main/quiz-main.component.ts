@@ -80,7 +80,7 @@ export class QuizMainComponent {
       answerYesNo: answerYes,
       userId: this.userId
     };
-
+    console.log(this.currentQuestion.suggestedAuthorId!);
     this.submit(req);
   }
 

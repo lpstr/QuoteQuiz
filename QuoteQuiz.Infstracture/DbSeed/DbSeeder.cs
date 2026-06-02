@@ -15,7 +15,7 @@ public static class DbSeeder
 
     private static async Task SeedAuthors(QuizDbContext db)
     {
-        //if (await db.Authors.AnyAsync()) return;
+        if (await db.Authors.AnyAsync()) return;
 
         var authors = new List<Author>
         {
@@ -47,7 +47,7 @@ public static class DbSeeder
 
     private static async Task SeedQuotes(QuizDbContext db)
     {
-       // if (await db.Quotes.AnyAsync()) return;
+        if (await db.Quotes.AnyAsync()) return;
 
         var authors = await db.Authors.ToListAsync();
         Author A(string name) => authors.First(a => a.Name == name);
