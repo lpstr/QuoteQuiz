@@ -1,0 +1,49 @@
+<h2 class="page-title">Game #{{ game.sessionId }}</h2>
+
+<div class="summary-container">
+  <mat-card class="summary-card">
+    <h3>Summary</h3>
+
+    <div class="summary-stats">
+      <div class="stat">
+        <span class="label">Total</span>
+        <span class="value">{{ game.questions.length }}</span>
+      </div>
+
+      <div class="stat correct">
+        <span class="label">Correct</span>
+        <span class="value">{{ correctCount() }}</span>
+      </div>
+
+      <div class="stat wrong">
+        <span class="label">Wrong</span>
+        <span class="value">{{ game.questions.length - correctCount() }}</span>
+      </div>
+    </div>
+  </mat-card>
+
+</div>
+
+<h3 class="section-title">Questions</h3>
+
+<div *ngFor="let q of game.questions">
+  <mat-card class="question-card" [ngClass]="q.isCorrect ? 'correct' : 'wrong'">
+    <p class="quote">“{{ q.quoteText }}”</p>
+
+    <p class="answer">
+      <strong>Your Answer:</strong>
+      {{
+        q.mode === 0
+          ? (q.answerYesNo ? 'Yes' : 'No')
+          : q.selectedAuthor
+      }}
+    </p>
+
+    <p class="correct-author">
+      <strong>Correct Author:</strong> {{ q.correctAuthor }}
+    </p>
+
+    <mat-icon *ngIf="q.isCorrect" class="icon-correct">check_circle</mat-icon>
+    <mat-icon *ngIf="!q.isCorrect" class="icon-wrong">cancel</mat-icon>
+  </mat-card>
+</div>

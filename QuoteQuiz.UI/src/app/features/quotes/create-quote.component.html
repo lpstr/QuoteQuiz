@@ -1,0 +1,21 @@
+<h2>Create Quote</h2>
+
+<mat-form-field appearance="fill">
+  <mat-label>Quote Text</mat-label>
+  <textarea matInput rows="4" [(ngModel)]="text"></textarea>
+</mat-form-field>
+
+<br>
+
+<mat-form-field appearance="fill">
+  <mat-label>Author</mat-label>
+  <mat-select [(ngModel)]="authorId">
+    <mat-option *ngFor="let a of authors" [value]="a.id">
+      {{ a.name }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<br><br>
+
+<button mat-raised-button color="primary" (click)="save()">Create</button>

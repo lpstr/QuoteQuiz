@@ -1,0 +1,23 @@
+<div class="settings-container">
+  <h2>Settings</h2>
+
+  <label>
+    <input type="radio"
+           name="mode"
+           value="Binary"
+           [checked]="mode === 'Binary'"
+           (change)="onModeChange('Binary')" />
+    Binary (Yes/No)
+  </label>
+
+  <label>
+    <input type="radio"
+           name="mode"
+           value="MultipleChoice"
+           [checked]="mode === 'MultipleChoice'"
+           (change)="onModeChange('MultipleChoice')" />
+    Multiple choice
+  </label>
+
+  <p>Mode is stored locally and used on the quiz page.</p>
+</div>

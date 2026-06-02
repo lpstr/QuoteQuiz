@@ -1,0 +1,42 @@
+<div class="quiz-container" *ngIf="currentQuestion; else noMore">
+  <h2>Who Said It?</h2>
+
+  <blockquote>
+    "{{ currentQuestion?.quoteText }}"
+  </blockquote>
+
+  <div *ngIf="!isAnswered">
+    <ng-container [ngSwitch]="mode">
+      <div *ngSwitchCase="'Binary'">
+        <p>{{ currentQuestion.suggestedAuthorName }}?</p>
+        <button (click)="onBinaryAnswer(true)">Yes</button>
+        <button (click)="onBinaryAnswer(false)">No</button>
+      </div>
+
+      <div *ngSwitchCase="'MultipleChoice'">
+        <div *ngFor="let option of currentQuestion.options">
+          <button (click)="onMultipleChoiceAnswer(option.id)">  
+            {{ option.name }}
+          </button>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <div *ngIf="isAnswered && answerResult">
+    <p [class.correct]="answerResult.isCorrect" [class.wrong]="!answerResult.isCorrect">
+      {{ answerResult.isCorrect ? 'Correct!' : 'Sorry, you are wrong!' }}
+      The right answer is: {{ answerResult.correctAuthor }}.
+    </p>
+
+    <p class="author-reveal">
+      — {{ answerResult.correctAuthor }}
+    </p>
+
+    <button (click)="next()">Next</button>
+  </div>
+</div>
+
+<ng-template #noMore>
+  <p>No more quotes in this session.</p>
+</ng-template>

@@ -1,0 +1,18 @@
+<h2>Create User</h2>
+
+<mat-form-field appearance="fill">
+  <mat-label>Username</mat-label>
+  <input matInput [(ngModel)]="username">
+</mat-form-field>
+
+<br>
+
+<mat-form-field appearance="fill">
+  <mat-label>Email</mat-label>
+  <input matInput [(ngModel)]="email">
+</mat-form-field>
+
+<br>
+<br>
+
+<button mat-raised-button color="primary" (click)="save()">Create</button>

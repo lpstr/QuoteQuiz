@@ -1,0 +1,24 @@
+<h2>Edit User</h2>
+
+<mat-form-field appearance="fill">
+  <mat-label>Username</mat-label>
+  <input matInput [(ngModel)]="user.username">
+</mat-form-field>
+
+<br>
+
+<mat-form-field appearance="fill">
+  <mat-label>Email</mat-label>
+  <input matInput [(ngModel)]="user.email">
+</mat-form-field>
+
+<br>
+
+<mat-checkbox [(ngModel)]="user.isDisabled">
+  Disabled
+</mat-checkbox>
+
+<br>
+<br>
+
+<button mat-raised-button color="primary" (click)="save()">Save</button>

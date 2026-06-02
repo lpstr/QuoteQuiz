@@ -1,0 +1,28 @@
+<h2>Settings</h2>
+
+<mat-form-field appearance="fill" style="width: 300px;">
+  <mat-label>Select User</mat-label>
+  <mat-select [(ngModel)]="userId">
+    <mat-option *ngFor="let u of users" [value]="u.id">
+      {{ u.username }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<br>
+<br>
+
+<mat-form-field appearance="fill" style="width: 300px;">
+  <mat-label>Select Game Mode</mat-label>
+  <mat-select [(ngModel)]="mode">
+    <mat-option [value]="GameMode.Binary">Binary (Yes / No)</mat-option>
+    <mat-option [value]="GameMode.MultipleAnswer">Multiple Choice</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<br>
+<br>
+
+<button mat-raised-button color="primary" (click)="save()">
+  Save Settings
+</button>
